@@ -1,5 +1,5 @@
-/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles/avl-tree.dir
-/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles/test-avl-tree.dir
+/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles/bicolor-tree.dir
+/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles/test-bicolor-tree.dir
 /Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles/test.dir
 /Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles/edit_cache.dir
 /Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles/rebuild_cache.dir
