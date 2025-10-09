@@ -16,39 +16,40 @@ int compare_int(const void *a, const void *b) {
   return 0;
 }
 
-// Tests sur char[1]
+// Tests on char[1]
 int compare_str(const void *a, const void *b) {
     return strcmp((const char *)a, (const char *)b);
 }
 
-// Tests sur une structure
+// Tests on a structure
 typedef struct {
-    char mot[50];
+    char word[50];
     char definition[200];
-} Dictionnaire;
+} Hashmap;
 
 int compare_dico(const void *a, const void *b) {
-    const Dictionnaire *da = (const Dictionnaire *)a;
-    const Dictionnaire *db = (const Dictionnaire *)b;
-    return strcmp(da->mot, db->mot);
+    const Hashmap *da = (const Hashmap *)a;
+    const Hashmap *db = (const Hashmap *)b;
+    return strcmp(da->word, db->word);
 }
 
-// Tests affichages par type
+// Print test by types
 void print_int(void *data) {
-    printf("Valeur : %d", *(int *)data);
+    printf("Value : %d", *(int *)data);
 }
 
 void print_str(void *data) {
-    printf("Valeur : %s", *(char **)data);
+    printf("Value : %s", *(char **)data);
 }
 
 void print_dico(void *data) {
-    Dictionnaire *d = (Dictionnaire *)data;
-    printf("Mot : %s -> %s", d->mot, d->definition);
+    Hashmap *d = (Hashmap *)data;
+    printf("Word : %s -> %s", d->word, d->definition);
 }
 
 
-// Vérifier les balances et le parcours en post order de l'arbre
+// Verify the conditions of a red-black tree
+// TODO : modify the attributes to match our structure
 void verify_tree(Tree tree, void (*func)(void *)) {
   if (!tree)
     return;
@@ -85,7 +86,7 @@ void test_int(void) {
     assert(tree_insert_sorted(&root, &values[i], sizeInt, compare_int) == true);
     int *found = tree_search(root, &values[i], compare_int);
     assert(found != NULL && *found == values[i]);
-    printf("Après insertion de %d :\n", values[i]);
+    printf("After inserting %d :\n", values[i]);
     verify_tree(root, print_int);
   }
 
@@ -96,12 +97,12 @@ void test_int(void) {
   }
 
   // Suppression
-  printf("affichage arbre après supressions\n");
+  printf("Tree after deletions :\n");
   int delete_vals[] = {20, 5, 10};
   size_t m = sizeof(delete_vals) / sizeof(delete_vals[0]);
 
   for (size_t i = 0; i < m; i++) {
-    printf("Suppression de %d :\n", delete_vals[i]);
+    printf("Deleting value %d :\n", delete_vals[i]);
     node_delete(&root, &delete_vals[i], NULL, compare_int, sizeof(int));
     assert(tree_search(root, &delete_vals[i], compare_int) == NULL);
     verify_tree(root, print_int);
@@ -113,20 +114,20 @@ void test_int(void) {
 void test_strings() {
     printf("Test Strings\n");
     Tree root = tree_new();
-    const char *words[] = {"pomme", "banane", "orange", "kiwi", "fraise"};
+    const char *words[] = {"apple", "banana", "orange", "kiwi", "strawberry"};
     size_t n = sizeof(words)/sizeof(words[0]);
     for (size_t i = 0; i < n; i++) {
         const char *w = words[i];
         assert(tree_insert_sorted(&root, &w, sizeof(char *), compare_str));
-        printf("Après insertion de %s :\n", w);
+        printf("After inserting %s :\n", w);
         verify_tree(root, print_str);
         printf("----------------\n");
     }
 
-    const char *delete_words[] = {"banane", "kiwi"};
+    const char *delete_words[] = {"banana", "kiwi"};
     size_t m = sizeof(delete_words)/sizeof(delete_words[0]);
     for (size_t i = 0; i < m; i++) {
-        printf("Suppression de %s :\n", delete_words[i]);
+        printf("Deleting value %s :\n", delete_words[i]);
         node_delete(&root, &delete_words[i], NULL, compare_str, sizeof(char *));
         verify_tree(root, print_str);
         printf("----------------\n");
@@ -136,35 +137,35 @@ void test_strings() {
 }
 
 void test_struct() {
-    printf("Test Dictionnaire\n");
+    printf("Test Hashmap\n");
     Tree root = tree_new();
-    Dictionnaire entries[] = {
-        {"chat", "animal domestique"},
-        {"chien", "meilleur ami de l'homme"},
-        {"poisson", "vit dans l'eau"},
-        {"souris", "petit rongeur"}
+    Hashmap entries[] = {
+        {"cat", "domestic animal"},
+        {"dog", "man's best friend"},
+        {"fish", "live in the water"},
+        {"mouse", "little rodent"}
     };
     size_t n = sizeof(entries)/sizeof(entries[0]);
 
     for (size_t i = 0; i < n; i++) {
-        assert(tree_insert_sorted(&root, &entries[i], sizeof(Dictionnaire), compare_dico));
-        printf("\nAprès insertion de %s :\n", entries[i].mot);
+        assert(tree_insert_sorted(&root, &entries[i], sizeof(Hashmap), compare_dico));
+        printf("\nAfter inserting %s :\n", entries[i].word);
         verify_tree(root, print_dico);
     }
 
-    Dictionnaire del = {"chien", ""};
-    printf("\nSuppression de %s :\n", del.mot);
-    node_delete(&root, &del, NULL, compare_dico, sizeof(Dictionnaire));
+    Hashmap del = {"dog", ""};
+    printf("\nSuppression de %s :\n", del.word);
+    node_delete(&root, &del, NULL, compare_dico, sizeof(Hashmap));
     verify_tree(root, print_dico), print_dico;
     tree_delete(root, NULL);
 }
 
 int main() {
     test_int();
-    printf("\nTests int réussis\n\n");
+    printf("\nInt tests successfuly passed\n\n");
     test_strings();
-    printf("\nTests char réussis\n\n");
+    printf("\nChar tests successfuly passed\n\n");
     test_struct();
-    printf("\nTests dictionnaire réussis.\n");
+    printf("\nHashmap tests successfuly passed\n");
     return EXIT_SUCCESS;
 }

@@ -1,5 +1,3 @@
-
-
 #include "bicolor-tree.h"
 #include "min-max.h"
 #include <stdbool.h>
@@ -29,11 +27,11 @@ void left_rotate(Tree *tree) {
   right->left = racine;
   racine->right = rightleft;
 
-  int oldRacineBal = racine->balance;
-  int oldRightBal = right->balance;
-
-  racine->balance = oldRacineBal - 1 - MAX(oldRightBal, 0);
-  right->balance = oldRightBal - 1 + MIN(racine->balance, 0);
+  /*
+  
+  TODO : Implement color change
+  
+  */
 }
 
 void right_rotate(Tree *tree) {
@@ -47,14 +45,15 @@ void right_rotate(Tree *tree) {
   left->right = racine;
   racine->left = leftright;
 
-  int oldRacineBal = racine->balance;
-  int oldLeftBal = left->balance;
-  racine->balance = oldRacineBal + 1 - MIN(oldLeftBal, 0);
-  left->balance = oldLeftBal + 1 + MAX(racine->balance, 0);
+    /*
+  
+  TODO : Implement color change
+  
+  */
 }
 
 
-// Permet d'equilibrer notre arbre en fonction des balances obtenues
+// Reequilibrate our red-black tree if a node violate a condition
 void rebalance(Tree *ptree) {
   if (!ptree || !*ptree) {
     return;
@@ -76,16 +75,16 @@ void rebalance(Tree *ptree) {
 
   if (racine->balance > 1) {
     if (racine->left && racine->left->balance >= 0)
-      right_rotate(ptree); // simple rotation -> gauche gauche
+      right_rotate(ptree); // simple rotation -> left left
     else {
-      left_rotate(&racine->left); // double rotation -> gauche droite
+      left_rotate(&racine->left); // double rotation -> left right
       right_rotate(ptree);
     }
   } else if (racine->balance < -1) {
     if (racine->right && racine->right->balance <= 0)
-      left_rotate(ptree); // simple rotation -> droite droite
+      left_rotate(ptree); // simple rotation -> right right
     else {
-      right_rotate(&racine->right); // double rotation -> droite gauche
+      right_rotate(&racine->right); // double rotation -> right left
       left_rotate(ptree);
     }
   }
@@ -96,7 +95,7 @@ Tree tree_create(const void *data, size_t size) {
   if (tree) {
     tree->left = NULL;
     tree->right = NULL;
-    tree->balance = 0;
+    tree->color = BLACK;
     tree->parent = NULL;
     memcpy(tree->data, data, size);
   }
@@ -155,7 +154,7 @@ bool tree_set_data(Tree tree, const void *data, size_t size) {
     return false;
 }
 
-// Respecter les criteres de l'arbre avl, reequilibrage si mauvaise insertion
+// Insert at the right place if it violates the conditions of a red-black tree
 bool tree_insert_sorted(Tree *ptree, const void *data,
                         size_t size,
                         int (*compare)(const void *, const void *)) {
@@ -163,8 +162,9 @@ bool tree_insert_sorted(Tree *ptree, const void *data,
     return false;
   }
 
-  if (*ptree == NULL) { // Arbre vide
+  if (*ptree == NULL) { // Empty tree
     *ptree = tree_create(data, size);
+    (*ptree)->color = RED;
     if (!*ptree)
       return false;
     return true;
@@ -173,22 +173,22 @@ bool tree_insert_sorted(Tree *ptree, const void *data,
   Tree racine = *ptree;
   int pos = compare(data, racine->data);
 
-  if (pos < 0) { // Insertion à gauche
+  if (pos < 0) { // Left insertion
     if (!tree_insert_sorted(&racine->left, data, size, compare)) {
       return false;
     }
-    if (racine->left) { // Si non NULL
+    if (racine->left) {
       racine->left->parent = racine;
     }
 
-  } else if (pos > 0) { // Insertion à droite
+  } else if (pos > 0) { // Right insertion
     if (!tree_insert_sorted(&racine->right, data, size, compare)) {
       return false;
     }
     if (racine->right) {
       racine->right->parent = racine;
     }
-  } else { // doublon donc on ajoute pas
+  } else { // duplicate, do nothing
     return false;
   }
 
@@ -197,7 +197,7 @@ bool tree_insert_sorted(Tree *ptree, const void *data,
   return true;
 }
 
-// Supprimer l'element d'un arbre, on passe size pour les tests avec plusieurs types
+// Remove the element from a the tree
 void node_delete(Tree *ptree, void *data, void (*delete_func)(void *),
                  int (*compare)(const void *, const void *), size_t size) {
   if (!ptree || !*ptree) {
@@ -213,7 +213,7 @@ void node_delete(Tree *ptree, void *data, void (*delete_func)(void *),
     node_delete(&racine->right, data, delete_func, compare, size);
   } else {
     if (racine->left && racine->right) {
-      // Deux enfants : remplacer par successeur
+      // Two childs
       Tree succ = racine->right;
       while (succ->left) {
         succ = succ->left;
@@ -221,7 +221,7 @@ void node_delete(Tree *ptree, void *data, void (*delete_func)(void *),
       memcpy(racine->data, succ->data, size);
       node_delete(&racine->right, racine->data, delete_func, compare, size);
     } else {
-      // 0 ou 1 enfant
+      // 0 or 1 child
       Tree enfant;
       if (racine->left) {
         enfant = racine->left;
@@ -243,7 +243,6 @@ void node_delete(Tree *ptree, void *data, void (*delete_func)(void *),
     }
   }
 
-  // Rééquilibrage
   rebalance(ptree);
 }
 
@@ -270,20 +269,6 @@ void tree_post_order(Tree tree, void (*func)(void *, void *),
     tree_post_order(tree->right, func, extra_data);
     func(tree, extra_data);
   }
-}
-
-size_t tree_height(Tree tree) {
-  if (tree)
-    return 1 + MAX(tree_height(tree->left), tree_height(tree->right));
-  else
-    return 0;
-}
-
-size_t tree_size(Tree tree) {
-  if (tree)
-    return 1 + tree_size(tree->left) + tree_size(tree->right);
-  else
-    return 0;
 }
 
 void *tree_search(Tree tree, const void *data,
@@ -314,25 +299,4 @@ static void set(void *data, void *array) {
     offset = 0;
     size = *(size_t *)array;
   }
-}
-
-int tree_sort(void *array, size_t length, size_t size,
-              int (*compare)(const void *, const void *)) {
-  size_t i;
-  Tree tree = tree_new();
-  void *pointer;
-
-  pointer = array;
-  for (i = 0; i < length; i++) {
-    if (tree_insert_sorted(&tree, pointer, size, compare))
-      pointer += size;
-    else {
-      tree_delete(tree, NULL);
-      return false;
-    }
-  }
-  set(NULL, &size);
-  tree_in_order(tree, set, array);
-  tree_delete(tree, NULL);
-  return true;
 }

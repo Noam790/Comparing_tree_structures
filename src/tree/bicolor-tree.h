@@ -6,26 +6,35 @@
 
 typedef struct _TreeNode *Tree;
 
+typedef enum{
+  RED,
+  BLACK,
+} Color;
+
 struct _TreeNode {
   Tree parent;
   Tree left;
   Tree right;
-  int balance;
+  Color color;
   char data[1];
 };
+
 
 Tree tree_new();
 
 void tree_delete(Tree tree, void (*delete)(void *));
 void left_rotate(Tree *tree);
 void right_rotate(Tree *tree);
-void node_delete(Tree *tree, void *data, void (*delete)(void *),
+
+void node_delete(Tree *tree, void *data, void (*delete)(void *), // To modify
                  int (*compare)(const void *, const void *), size_t size);
-bool tree_insert_sorted(
+
+bool tree_insert_sorted( // To modify
     Tree *ptree, const void *data, size_t size,
     int (*compare)(const void *,
                    const void *));
-void rebalance(Tree *ptree);
+
+void rebalance(Tree *ptree); // To modify
 
 Tree tree_create(const void *data, size_t size);
 
