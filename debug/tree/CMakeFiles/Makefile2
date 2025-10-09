@@ -63,8 +63,8 @@ CMAKE_BINARY_DIR = /Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/avl-tree.dir/all
-all: CMakeFiles/test-avl-tree.dir/all
+all: CMakeFiles/bicolor-tree.dir/all
+all: CMakeFiles/test-bicolor-tree.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -72,61 +72,61 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/avl-tree.dir/clean
-clean: CMakeFiles/test-avl-tree.dir/clean
+clean: CMakeFiles/bicolor-tree.dir/clean
+clean: CMakeFiles/test-bicolor-tree.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/avl-tree.dir
+# Target rules for target CMakeFiles/bicolor-tree.dir
 
 # All Build rule for target.
-CMakeFiles/avl-tree.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/avl-tree.dir/build.make CMakeFiles/avl-tree.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/avl-tree.dir/build.make CMakeFiles/avl-tree.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles --progress-num=1,2 "Built target avl-tree"
-.PHONY : CMakeFiles/avl-tree.dir/all
+CMakeFiles/bicolor-tree.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bicolor-tree.dir/build.make CMakeFiles/bicolor-tree.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bicolor-tree.dir/build.make CMakeFiles/bicolor-tree.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles --progress-num=1,2 "Built target bicolor-tree"
+.PHONY : CMakeFiles/bicolor-tree.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/avl-tree.dir/rule: cmake_check_build_system
+CMakeFiles/bicolor-tree.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/avl-tree.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/bicolor-tree.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles 0
-.PHONY : CMakeFiles/avl-tree.dir/rule
+.PHONY : CMakeFiles/bicolor-tree.dir/rule
 
 # Convenience name for target.
-avl-tree: CMakeFiles/avl-tree.dir/rule
-.PHONY : avl-tree
+bicolor-tree: CMakeFiles/bicolor-tree.dir/rule
+.PHONY : bicolor-tree
 
 # clean rule for target.
-CMakeFiles/avl-tree.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/avl-tree.dir/build.make CMakeFiles/avl-tree.dir/clean
-.PHONY : CMakeFiles/avl-tree.dir/clean
+CMakeFiles/bicolor-tree.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bicolor-tree.dir/build.make CMakeFiles/bicolor-tree.dir/clean
+.PHONY : CMakeFiles/bicolor-tree.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/test-avl-tree.dir
+# Target rules for target CMakeFiles/test-bicolor-tree.dir
 
 # All Build rule for target.
-CMakeFiles/test-avl-tree.dir/all: CMakeFiles/avl-tree.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-avl-tree.dir/build.make CMakeFiles/test-avl-tree.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-avl-tree.dir/build.make CMakeFiles/test-avl-tree.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles --progress-num=3,4 "Built target test-avl-tree"
-.PHONY : CMakeFiles/test-avl-tree.dir/all
+CMakeFiles/test-bicolor-tree.dir/all: CMakeFiles/bicolor-tree.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-bicolor-tree.dir/build.make CMakeFiles/test-bicolor-tree.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-bicolor-tree.dir/build.make CMakeFiles/test-bicolor-tree.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles --progress-num=3,4 "Built target test-bicolor-tree"
+.PHONY : CMakeFiles/test-bicolor-tree.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/test-avl-tree.dir/rule: cmake_check_build_system
+CMakeFiles/test-bicolor-tree.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test-avl-tree.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test-bicolor-tree.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree/CMakeFiles 0
-.PHONY : CMakeFiles/test-avl-tree.dir/rule
+.PHONY : CMakeFiles/test-bicolor-tree.dir/rule
 
 # Convenience name for target.
-test-avl-tree: CMakeFiles/test-avl-tree.dir/rule
-.PHONY : test-avl-tree
+test-bicolor-tree: CMakeFiles/test-bicolor-tree.dir/rule
+.PHONY : test-bicolor-tree
 
 # clean rule for target.
-CMakeFiles/test-avl-tree.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-avl-tree.dir/build.make CMakeFiles/test-avl-tree.dir/clean
-.PHONY : CMakeFiles/test-avl-tree.dir/clean
+CMakeFiles/test-bicolor-tree.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-bicolor-tree.dir/build.make CMakeFiles/test-bicolor-tree.dir/clean
+.PHONY : CMakeFiles/test-bicolor-tree.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

@@ -1,4 +1,4 @@
-/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tmp/lib/libavl-tree.so
-/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tmp/include/avl-tree.h
-/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tmp/share/pkgconfig/avl-tree.pc
-/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tmp/cmake/avlTreeConfig.cmake
+/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tmp/lib/libbicolor-tree.so
+/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tmp/include/bicolor-tree.h
+/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tmp/share/pkgconfig/bicolor-tree.pc
+/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tmp/cmake/bicolorTreeConfig.cmake

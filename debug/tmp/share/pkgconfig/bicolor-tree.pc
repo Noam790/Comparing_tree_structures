@@ -1,0 +1,14 @@
+prefix=/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tmp
+bindir=${prefix}/bin
+staticlibdir=${prefix}/lib
+sharedlibdir=${prefix}/lib
+includedir=${prefix}/include
+
+Version: 
+
+Name: avltree
+Description: List library
+
+Requires:
+Libs: -L${bindir} -L${staticlibdir} -L${sharedlibdir} -lavltree
+Cflags: -I${includedir}

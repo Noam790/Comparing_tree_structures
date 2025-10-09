@@ -172,78 +172,78 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named avl-tree
+# Target rules for targets named bicolor-tree
 
 # Build rule for target.
-avl-tree: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 avl-tree
-.PHONY : avl-tree
+bicolor-tree: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 bicolor-tree
+.PHONY : bicolor-tree
 
 # fast build rule for target.
-avl-tree/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/avl-tree.dir/build.make CMakeFiles/avl-tree.dir/build
-.PHONY : avl-tree/fast
+bicolor-tree/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bicolor-tree.dir/build.make CMakeFiles/bicolor-tree.dir/build
+.PHONY : bicolor-tree/fast
 
 #=============================================================================
-# Target rules for targets named test-avl-tree
+# Target rules for targets named test-bicolor-tree
 
 # Build rule for target.
-test-avl-tree: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test-avl-tree
-.PHONY : test-avl-tree
+test-bicolor-tree: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test-bicolor-tree
+.PHONY : test-bicolor-tree
 
 # fast build rule for target.
-test-avl-tree/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-avl-tree.dir/build.make CMakeFiles/test-avl-tree.dir/build
-.PHONY : test-avl-tree/fast
+test-bicolor-tree/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-bicolor-tree.dir/build.make CMakeFiles/test-bicolor-tree.dir/build
+.PHONY : test-bicolor-tree/fast
 
-avl-tree.o: avl-tree.c.o
-.PHONY : avl-tree.o
-
-# target to build an object file
-avl-tree.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/avl-tree.dir/build.make CMakeFiles/avl-tree.dir/avl-tree.c.o
-.PHONY : avl-tree.c.o
-
-avl-tree.i: avl-tree.c.i
-.PHONY : avl-tree.i
-
-# target to preprocess a source file
-avl-tree.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/avl-tree.dir/build.make CMakeFiles/avl-tree.dir/avl-tree.c.i
-.PHONY : avl-tree.c.i
-
-avl-tree.s: avl-tree.c.s
-.PHONY : avl-tree.s
-
-# target to generate assembly for a file
-avl-tree.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/avl-tree.dir/build.make CMakeFiles/avl-tree.dir/avl-tree.c.s
-.PHONY : avl-tree.c.s
-
-test-avl-tree.o: test-avl-tree.c.o
-.PHONY : test-avl-tree.o
+bicolor-tree.o: bicolor-tree.c.o
+.PHONY : bicolor-tree.o
 
 # target to build an object file
-test-avl-tree.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-avl-tree.dir/build.make CMakeFiles/test-avl-tree.dir/test-avl-tree.c.o
-.PHONY : test-avl-tree.c.o
+bicolor-tree.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bicolor-tree.dir/build.make CMakeFiles/bicolor-tree.dir/bicolor-tree.c.o
+.PHONY : bicolor-tree.c.o
 
-test-avl-tree.i: test-avl-tree.c.i
-.PHONY : test-avl-tree.i
+bicolor-tree.i: bicolor-tree.c.i
+.PHONY : bicolor-tree.i
 
 # target to preprocess a source file
-test-avl-tree.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-avl-tree.dir/build.make CMakeFiles/test-avl-tree.dir/test-avl-tree.c.i
-.PHONY : test-avl-tree.c.i
+bicolor-tree.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bicolor-tree.dir/build.make CMakeFiles/bicolor-tree.dir/bicolor-tree.c.i
+.PHONY : bicolor-tree.c.i
 
-test-avl-tree.s: test-avl-tree.c.s
-.PHONY : test-avl-tree.s
+bicolor-tree.s: bicolor-tree.c.s
+.PHONY : bicolor-tree.s
 
 # target to generate assembly for a file
-test-avl-tree.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-avl-tree.dir/build.make CMakeFiles/test-avl-tree.dir/test-avl-tree.c.s
-.PHONY : test-avl-tree.c.s
+bicolor-tree.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bicolor-tree.dir/build.make CMakeFiles/bicolor-tree.dir/bicolor-tree.c.s
+.PHONY : bicolor-tree.c.s
+
+test-bicolor-tree.o: test-bicolor-tree.c.o
+.PHONY : test-bicolor-tree.o
+
+# target to build an object file
+test-bicolor-tree.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-bicolor-tree.dir/build.make CMakeFiles/test-bicolor-tree.dir/test-bicolor-tree.c.o
+.PHONY : test-bicolor-tree.c.o
+
+test-bicolor-tree.i: test-bicolor-tree.c.i
+.PHONY : test-bicolor-tree.i
+
+# target to preprocess a source file
+test-bicolor-tree.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-bicolor-tree.dir/build.make CMakeFiles/test-bicolor-tree.dir/test-bicolor-tree.c.i
+.PHONY : test-bicolor-tree.c.i
+
+test-bicolor-tree.s: test-bicolor-tree.c.s
+.PHONY : test-bicolor-tree.s
+
+# target to generate assembly for a file
+test-bicolor-tree.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test-bicolor-tree.dir/build.make CMakeFiles/test-bicolor-tree.dir/test-bicolor-tree.c.s
+.PHONY : test-bicolor-tree.c.s
 
 # Help Target
 help:
@@ -258,14 +258,14 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... avl-tree"
-	@echo "... test-avl-tree"
-	@echo "... avl-tree.o"
-	@echo "... avl-tree.i"
-	@echo "... avl-tree.s"
-	@echo "... test-avl-tree.o"
-	@echo "... test-avl-tree.i"
-	@echo "... test-avl-tree.s"
+	@echo "... bicolor-tree"
+	@echo "... test-bicolor-tree"
+	@echo "... bicolor-tree.o"
+	@echo "... bicolor-tree.i"
+	@echo "... bicolor-tree.s"
+	@echo "... test-bicolor-tree.o"
+	@echo "... test-bicolor-tree.i"
+	@echo "... test-bicolor-tree.s"
 .PHONY : help
 
 
