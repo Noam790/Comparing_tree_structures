@@ -1,1 +1,0 @@
-/usr/bin/cc -g -rdynamic CMakeFiles/test-avl-tree.dir/test-avl-tree.c.o -o test-avl-tree  -Wl,-rpath,/Utilisateurs/nchamoua/Documents/L3/Comparing_tree_structures/debug/tree libavl-tree.so 
