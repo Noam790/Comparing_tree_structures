@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -g -shared -Wl,-soname,libbicolor-tree.so -o libbicolor-tree.so CMakeFiles/bicolor-tree.dir/bicolor-tree.c.o 

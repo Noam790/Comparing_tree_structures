@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -g -shared -Wl,-soname,libavl-tree.so -o libavl-tree.so CMakeFiles/avl-tree.dir/avl-tree.c.o 

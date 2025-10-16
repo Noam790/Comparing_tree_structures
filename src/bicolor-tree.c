@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 
+// Add method to get grand parent / uncle / min tree
+
 static Tree get_grandparent(Tree n) {
   return (n && n->parent) ? n->parent->parent : NULL;
 }
@@ -25,26 +27,7 @@ static void replace_node(Tree *root, Tree oldn, Tree newn) {
     newn->parent = oldn->parent;
 }
 
-/**
- *
- * The function is called after removing a node from a red-black tree.
- * It ensures that the tree maintains its balance and color properties by
- * performing rotations and recolorings according to the standard
- * red-black tree delete fix-up algorithm.
- *
- * @param root   Pointer to the root pointer of the tree.
- * @param x      The node that replaces the deleted node (may be NULL).
- * @param parent The parent of x before the fix-up begins.
- *
- * The function handles the following standard cases:
- *  - **Case 1:** The sibling is red → recolor and rotate.
- *  - **Case 2:** The sibling and its children are black → recolor and move up.
- *  - **Case 3:** The sibling is black, one red child on the inner side → rotate to convert to Case 4.
- *  - **Case 4:** The sibling is black, one red child on the outer side → recolor and rotate to fix.
- *
- * After execution, the root remains black and all red-black tree properties
- * are restored.
- */
+// Helps the delete method respecting the red black trees conditions
 static void delete_fixup(Tree *root, Tree x, Tree parent) {
   while ((x != *root) && (!x || x->color == BLACK)) {
     bool left_side = (parent && x == parent->left);
