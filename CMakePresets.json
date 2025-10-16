@@ -8,11 +8,11 @@
     {
       "name": "base",
       "hidden": true,
-      "generator": "Ninja",
+      "generator": "Unix Makefiles",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_C_STANDARD": "99",
-        "CMAKE_C_COMPILER": "clang"
+        "CMAKE_C_COMPILER": "gcc"
       }
     },
     {
