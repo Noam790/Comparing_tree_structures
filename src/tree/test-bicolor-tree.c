@@ -27,7 +27,7 @@ int compare_dico(const void *a, const void *b) {
 // Print functions
 void print_int(void *data) { printf("%d", *(int *)data); }
 void print_str(void *data) { printf("%s", *(char **)data); }
-void print_dico(void *data) {
+void print_hashmap(void *data) {
   Hashmap *d = data;
   printf("%s -> %s", d->word, d->definition);
 }
@@ -56,6 +56,10 @@ void test_int() {
     tree_insert_sorted(&root, &values[i], sizeof(int), compare_int);
   }
 
+  printf("\n Integer tree after inserting:\n");
+  print_tree(root, print_int, 0);
+  printf("\n");
+
   int delete_vals[] = {20, 5, 10};
   size_t m = sizeof(delete_vals) / sizeof(delete_vals[0]);
   for (size_t i = 0; i < m; i++) {
@@ -63,7 +67,7 @@ void test_int() {
     node_delete(&root, &delete_vals[i], NULL, compare_int, sizeof(int));
   }
 
-  printf("\nFinal int tree:\n");
+  printf("\n Integer tree after deleting:\n");
   print_tree(root, print_int, 0);
   tree_delete(root, NULL);
   printf("\n");
@@ -80,6 +84,10 @@ void test_strings() {
     tree_insert_sorted(&root, &words[i], sizeof(char *), compare_str);
   }
 
+  printf("\nString tree after inserting:\n");
+  print_tree(root, print_str, 0);
+  printf("\n");
+
   const char *delete_words[] = {"banana", "kiwi"};
   size_t m = sizeof(delete_words) / sizeof(delete_words[0]);
   for (size_t i = 0; i < m; i++) {
@@ -87,7 +95,7 @@ void test_strings() {
     node_delete(&root, &delete_words[i], NULL, compare_str, sizeof(char *));
   }
 
-  printf("\nFinal string tree:\n");
+  printf("\nString tree after deleting:\n");
   print_tree(root, print_str, 0);
   tree_delete(root, NULL);
   printf("\n");
@@ -107,6 +115,10 @@ void test_struct() {
     tree_insert_sorted(&root, &entries[i], sizeof(Hashmap), compare_dico);
   }
 
+  printf("\n Hashmap tree after inserting:\n");
+  print_tree(root, print_hashmap, 0);
+  printf("\n");
+
   Hashmap delete_entries[] = {{"dog", ""}, {"mouse", ""}};
   size_t m = sizeof(delete_entries) / sizeof(delete_entries[0]);
   for (size_t i = 0; i < m; i++) {
@@ -114,8 +126,8 @@ void test_struct() {
     node_delete(&root, &delete_entries[i], NULL, compare_dico, sizeof(Hashmap));
   }
 
-  printf("\nFinal hashmap tree:\n");
-  print_tree(root, print_dico, 0);
+  printf("\n Integer tree after deleting:\n");
+  print_tree(root, print_hashmap, 0);
   tree_delete(root, NULL);
   printf("\n");
 }
