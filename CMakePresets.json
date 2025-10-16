@@ -6,19 +6,19 @@
   },
   "configurePresets": [
     {
-      "name": "base",
+      "name": "_base",
       "hidden": true,
       "generator": "Unix Makefiles",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_C_STANDARD": "99",
-        "CMAKE_C_COMPILER": "gcc"
+        "CMAKE_C_COMPILER": "gcc",
+        "BUILD_SHARED_LIBS": "ON"
       }
     },
     {
-      "name": "linux",
+      "name": "_linux",
       "hidden": true,
-      "inherits": "base",
+      "inherits": "_base",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -28,7 +28,7 @@
     {
       "name": "linux-debug",
       "displayName": "Linux Debug",
-      "inherits": "linux",
+      "inherits": "_linux",
       "binaryDir": "${sourceDir}/build/linux/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -38,7 +38,7 @@
     {
       "name": "linux-release",
       "displayName": "Linux Release",
-      "inherits": "linux",
+      "inherits": "_linux",
       "binaryDir": "${sourceDir}/build/linux/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",

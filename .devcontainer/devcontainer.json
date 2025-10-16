@@ -1,0 +1,24 @@
+{
+    "name": "C/C++ Dev Container",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cmake-tools",
+                "xaver.clang-format"
+            ],
+            "settings": {
+                "files.exclude": {
+                    "**/.vscode": true
+                },
+                "files.eol": "\n",
+                "editor.defaultFormatter": "xaver.clang-format",
+                "editor.formatOnSave": true,
+                "cmake.useCMakePresets": "always"
+            }
+        }
+    }
+}

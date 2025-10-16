@@ -1,10 +1,5 @@
 # add_executable(tree tree.c tree.h)
-add_library(bicolor-tree SHARED bicolor-tree.c ../include/bicolor-tree.h)
-
-target_include_directories(bicolor-tree PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<INSTALL_INTERFACE:include>
-)
+add_library(bicolor-tree bicolor-tree.c ${CMAKE_SOURCE_DIR}/include/bicolor-tree.h)
 
 set_target_properties(bicolor-tree PROPERTIES
     VERSION ${PROJECT_VERSION}
@@ -19,7 +14,7 @@ install(
 )
 
 install(
-	FILES ../include/bicolor-tree.h
+	FILES ${CMAKE_SOURCE_DIR}/include/bicolor-tree.h
 	DESTINATION include
 )
 
