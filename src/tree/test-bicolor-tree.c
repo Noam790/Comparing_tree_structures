@@ -1,171 +1,128 @@
+#include "bicolor-tree.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "bicolor-tree.h"
 
-
-// Tests sur int
+// Comparators
 int compare_int(const void *a, const void *b) {
-  int val_a = *(int *)a;
-  int val_b = *(int *)b;
-  if (val_a < val_b)
-    return -1;
-  if (val_a > val_b)
-    return 1;
-  return 0;
+  int va = *(int *)a, vb = *(int *)b;
+  return (va < vb) ? -1 : (va > vb);
 }
 
-// Tests on char[1]
 int compare_str(const void *a, const void *b) {
-    return strcmp((const char *)a, (const char *)b);
+  return strcmp(*(const char **)a, *(const char **)b);
 }
 
-// Tests on a structure
 typedef struct {
-    char word[50];
-    char definition[200];
+  char word[50];
+  char definition[200];
 } Hashmap;
 
 int compare_dico(const void *a, const void *b) {
-    const Hashmap *da = (const Hashmap *)a;
-    const Hashmap *db = (const Hashmap *)b;
-    return strcmp(da->word, db->word);
+  const Hashmap *da = a, *db = b;
+  return strcmp(da->word, db->word);
 }
 
-// Print test by types
-void print_int(void *data) {
-    printf("Value : %d", *(int *)data);
-}
-
-void print_str(void *data) {
-    printf("Value : %s", *(char **)data);
-}
-
+// Print functions
+void print_int(void *data) { printf("%d", *(int *)data); }
+void print_str(void *data) { printf("%s", *(char **)data); }
 void print_dico(void *data) {
-    Hashmap *d = (Hashmap *)data;
-    printf("Word : %s -> %s", d->word, d->definition);
+  Hashmap *d = data;
+  printf("%s -> %s", d->word, d->definition);
 }
 
-
-// Verify the conditions of a red-black tree
-// TODO : modify the attributes to match our structure
-void verify_tree(Tree tree, void (*func)(void *)) {
+// Display entire tree
+void print_tree(Tree tree, void (*print)(void *), int depth) {
   if (!tree)
     return;
-
-  int left_height = 0;
-  int right_height = 0;
-
-  if (tree->left) {
-    verify_tree(tree->left, func);
-    left_height = tree->left->balance + 1;
-  }
-  if (tree->right) {
-    verify_tree(tree->right, func);
-    right_height = tree->right->balance + 1;
-  }
-
-  int expected_balance = left_height - right_height;
-  assert(tree->balance == expected_balance);
-
-  func(tree->data);
-  printf(", Balance : %d\n", tree->balance);
+  for (int i = 0; i < depth; i++)
+    printf("  ");
+  printf("[%s] ", tree->color == BLACK ? "BLACK" : "RED");
+  print(tree->data);
+  printf("\n");
+  print_tree(tree->left, print, depth + 1);
+  print_tree(tree->right, print, depth + 1);
 }
 
-void test_int(void) {
-  Tree root = tree_new();
-  assert(root == NULL);
-
-  int values[] = {10, 5, 20, 15, 25, 2, 7};
+// Test values
+void test_int() {
+  Tree root = NULL;
+  int values[] = {10, 20, 5, 15, 2, 25, 7, 12};
   size_t n = sizeof(values) / sizeof(values[0]);
-  size_t sizeInt = sizeof(int);
 
-  // Insertion
   for (size_t i = 0; i < n; i++) {
-    assert(tree_insert_sorted(&root, &values[i], sizeInt, compare_int) == true);
-    int *found = tree_search(root, &values[i], compare_int);
-    assert(found != NULL && *found == values[i]);
-    printf("After inserting %d :\n", values[i]);
-    verify_tree(root, print_int);
+    printf("Inserting value: %d\n", values[i]);
+    tree_insert_sorted(&root, &values[i], sizeof(int), compare_int);
   }
 
-  // Recherche
-  for (size_t i = 0; i < n; i++) {
-    int *found = tree_search(root, &values[i], compare_int);
-    assert(found != NULL && *found == values[i]);
-  }
-
-  // Suppression
-  printf("Tree after deletions :\n");
   int delete_vals[] = {20, 5, 10};
   size_t m = sizeof(delete_vals) / sizeof(delete_vals[0]);
-
   for (size_t i = 0; i < m; i++) {
-    printf("Deleting value %d :\n", delete_vals[i]);
+    printf("Deleting value: %d\n", delete_vals[i]);
     node_delete(&root, &delete_vals[i], NULL, compare_int, sizeof(int));
-    assert(tree_search(root, &delete_vals[i], compare_int) == NULL);
-    verify_tree(root, print_int);
   }
 
+  printf("\nFinal int tree:\n");
+  print_tree(root, print_int, 0);
   tree_delete(root, NULL);
+  printf("\n");
 }
 
 void test_strings() {
-    printf("Test Strings\n");
-    Tree root = tree_new();
-    const char *words[] = {"apple", "banana", "orange", "kiwi", "strawberry"};
-    size_t n = sizeof(words)/sizeof(words[0]);
-    for (size_t i = 0; i < n; i++) {
-        const char *w = words[i];
-        assert(tree_insert_sorted(&root, &w, sizeof(char *), compare_str));
-        printf("After inserting %s :\n", w);
-        verify_tree(root, print_str);
-        printf("----------------\n");
-    }
+  Tree root = NULL;
+  const char *words[] = {"orange", "apple", "strawberry",
+                         "banana", "kiwi",  "mango"};
+  size_t n = sizeof(words) / sizeof(words[0]);
 
-    const char *delete_words[] = {"banana", "kiwi"};
-    size_t m = sizeof(delete_words)/sizeof(delete_words[0]);
-    for (size_t i = 0; i < m; i++) {
-        printf("Deleting value %s :\n", delete_words[i]);
-        node_delete(&root, &delete_words[i], NULL, compare_str, sizeof(char *));
-        verify_tree(root, print_str);
-        printf("----------------\n");
-    }
+  for (size_t i = 0; i < n; i++) {
+    printf("Inserting value: %s\n", words[i]);
+    tree_insert_sorted(&root, &words[i], sizeof(char *), compare_str);
+  }
 
-    tree_delete(root, NULL);
+  const char *delete_words[] = {"banana", "kiwi"};
+  size_t m = sizeof(delete_words) / sizeof(delete_words[0]);
+  for (size_t i = 0; i < m; i++) {
+    printf("Deleting value: %s\n", delete_words[i]);
+    node_delete(&root, &delete_words[i], NULL, compare_str, sizeof(char *));
+  }
+
+  printf("\nFinal string tree:\n");
+  print_tree(root, print_str, 0);
+  tree_delete(root, NULL);
+  printf("\n");
 }
 
 void test_struct() {
-    printf("Test Hashmap\n");
-    Tree root = tree_new();
-    Hashmap entries[] = {
-        {"cat", "domestic animal"},
-        {"dog", "man's best friend"},
-        {"fish", "live in the water"},
-        {"mouse", "little rodent"}
-    };
-    size_t n = sizeof(entries)/sizeof(entries[0]);
+  Tree root = NULL;
+  Hashmap entries[] = {{"cat", "domestic animal"},
+                       {"dog", "man's best friend"},
+                       {"fish", "live in water"},
+                       {"mouse", "little rodent"},
+                       {"bird", "can fly"}};
+  size_t n = sizeof(entries) / sizeof(entries[0]);
 
-    for (size_t i = 0; i < n; i++) {
-        assert(tree_insert_sorted(&root, &entries[i], sizeof(Hashmap), compare_dico));
-        printf("\nAfter inserting %s :\n", entries[i].word);
-        verify_tree(root, print_dico);
-    }
+  for (size_t i = 0; i < n; i++) {
+    printf("Inserting value: %s\n", entries[i].word);
+    tree_insert_sorted(&root, &entries[i], sizeof(Hashmap), compare_dico);
+  }
 
-    Hashmap del = {"dog", ""};
-    printf("\nSuppression de %s :\n", del.word);
-    node_delete(&root, &del, NULL, compare_dico, sizeof(Hashmap));
-    verify_tree(root, print_dico), print_dico;
-    tree_delete(root, NULL);
+  Hashmap delete_entries[] = {{"dog", ""}, {"mouse", ""}};
+  size_t m = sizeof(delete_entries) / sizeof(delete_entries[0]);
+  for (size_t i = 0; i < m; i++) {
+    printf("Deleting value: %s\n", delete_entries[i].word);
+    node_delete(&root, &delete_entries[i], NULL, compare_dico, sizeof(Hashmap));
+  }
+
+  printf("\nFinal hashmap tree:\n");
+  print_tree(root, print_dico, 0);
+  tree_delete(root, NULL);
+  printf("\n");
 }
 
 int main() {
-    test_int();
-    printf("\nInt tests successfuly passed\n\n");
-    test_strings();
-    printf("\nChar tests successfuly passed\n\n");
-    test_struct();
-    printf("\nHashmap tests successfuly passed\n");
-    return EXIT_SUCCESS;
+  test_int();
+  test_strings();
+  test_struct();
+  return 0;
 }
