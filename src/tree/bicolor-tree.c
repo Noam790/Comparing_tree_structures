@@ -3,7 +3,36 @@
 #include <stdbool.h>
 #include <string.h>
 
-/*--------------------------------------------------------------------*/
+// Add method to get grand parent / uncle / min tree
+
+static Tree get_grandparent(Tree n) {
+  return (n && n->parent) ? n->parent->parent : NULL;
+}
+
+static Tree get_uncle(Tree n) {
+  Tree g = get_grandparent(n);
+  if (!g)
+    return NULL;
+  return (n->parent == g->left) ? g->right : g->left;
+}
+
+static void replace_node(Tree *root, Tree oldn, Tree newn) {
+  if (!oldn->parent)
+    *root = newn;
+  else if (oldn == oldn->parent->left)
+    oldn->parent->left = newn;
+  else
+    oldn->parent->right = newn;
+  if (newn)
+    newn->parent = oldn->parent;
+}
+
+static Tree tree_minimum(Tree n) {
+  while (n && n->left)
+    n = n->left;
+  return n;
+}
+
 Tree tree_new() { return NULL; }
 
 void tree_delete(Tree tree, void (*delete)(void *)) {
@@ -16,78 +45,46 @@ void tree_delete(Tree tree, void (*delete)(void *)) {
   }
 }
 
-void left_rotate(Tree *tree) {
-  Tree racine = *tree;
-  Tree right = racine->right;
-  if (!right) {
+void left_rotate(Tree *root, Tree x) {
+  Tree y = x->right;
+  if (!y)
     return;
-  }
-  Tree rightleft = right->left;
-  *tree = right;
-  right->left = racine;
-  racine->right = rightleft;
 
-  /*
-  
-  TODO : Implement color change
-  
-  */
+  x->right = y->left;
+  if (y->left)
+    y->left->parent = x;
+
+  y->parent = x->parent;
+  if (!x->parent)
+    *root = y;
+  else if (x == x->parent->left)
+    x->parent->left = y;
+  else
+    x->parent->right = y;
+
+  y->left = x;
+  x->parent = y;
 }
 
-void right_rotate(Tree *tree) {
-  Tree racine = *tree;
-  Tree left = racine->left;
-  if (!left) {
+void right_rotate(Tree *root, Tree x) {
+  Tree y = x->left;
+  if (!y)
     return;
-  }
-  Tree leftright = left->right;
-  *tree = left;
-  left->right = racine;
-  racine->left = leftright;
 
-    /*
-  
-  TODO : Implement color change
-  
-  */
-}
+  x->left = y->right;
+  if (y->right)
+    y->right->parent = x;
 
+  y->parent = x->parent;
+  if (!x->parent)
+    *root = y;
+  else if (x == x->parent->right)
+    x->parent->right = y;
+  else
+    x->parent->left = y;
 
-// Reequilibrate our red-black tree if a node violate a condition
-void rebalance(Tree *ptree) {
-  if (!ptree || !*ptree) {
-    return;
-  }
-
-  Tree racine = *ptree;
-  int left_height = 0;
-  int right_height = 0;
-
-  if (racine->left) {
-    left_height = racine->left->balance + 1;
-  }
-
-  if (racine->right) {
-    right_height = racine->right->balance + 1;
-  }
-
-  racine->balance = left_height - right_height;
-
-  if (racine->balance > 1) {
-    if (racine->left && racine->left->balance >= 0)
-      right_rotate(ptree); // simple rotation -> left left
-    else {
-      left_rotate(&racine->left); // double rotation -> left right
-      right_rotate(ptree);
-    }
-  } else if (racine->balance < -1) {
-    if (racine->right && racine->right->balance <= 0)
-      left_rotate(ptree); // simple rotation -> right right
-    else {
-      right_rotate(&racine->right); // double rotation -> right left
-      left_rotate(ptree);
-    }
-  }
+  y->right = x;
+  x->parent = y;
 }
 
 Tree tree_create(const void *data, size_t size) {
@@ -95,7 +92,7 @@ Tree tree_create(const void *data, size_t size) {
   if (tree) {
     tree->left = NULL;
     tree->right = NULL;
-    tree->color = BLACK;
+    tree->color = RED;
     tree->parent = NULL;
     memcpy(tree->data, data, size);
   }
@@ -155,95 +152,112 @@ bool tree_set_data(Tree tree, const void *data, size_t size) {
 }
 
 // Insert at the right place if it violates the conditions of a red-black tree
-bool tree_insert_sorted(Tree *ptree, const void *data,
-                        size_t size,
+bool tree_insert_sorted(Tree *root, const void *data, size_t size,
                         int (*compare)(const void *, const void *)) {
-  if (!ptree) {
-    return false;
+  Tree parent = NULL, cur = *root;
+
+  while (cur) {
+    parent = cur;
+    int cmp = compare(data, cur->data);
+    if (cmp == 0)
+      return false;
+    cur = (cmp < 0) ? cur->left : cur->right;
   }
 
-  if (*ptree == NULL) { // Empty tree
-    *ptree = tree_create(data, size);
-    (*ptree)->color = RED;
-    if (!*ptree)
-      return false;
-    return true;
+  Tree node = tree_create(data, size);
+  node->parent = parent;
+
+  if (!parent)
+    *root = node;
+  else if (compare(data, parent->data) < 0)
+    parent->left = node;
+  else
+    parent->right = node;
+
+  while (node != *root && node->parent->color == RED) {
+    Tree g = get_grandparent(node);
+    if (!g)
+      break;
+
+    bool left_side = (node->parent == g->left);
+    Tree uncle = get_uncle(node);
+
+    if (uncle && uncle->color == RED) {
+      node->parent->color = BLACK;
+      uncle->color = BLACK;
+      g->color = RED;
+      node = g;
+    } else {
+      if (left_side && node == node->parent->right) {
+        node = node->parent;
+        left_rotate(root, node);
+      } else if (!left_side && node == node->parent->left) {
+        node = node->parent;
+        right_rotate(root, node);
+      }
+
+      node->parent->color = BLACK;
+      g->color = RED;
+      if (left_side)
+        right_rotate(root, g);
+      else
+        left_rotate(root, g);
+    }
   }
 
-  Tree racine = *ptree;
-  int pos = compare(data, racine->data);
-
-  if (pos < 0) { // Left insertion
-    if (!tree_insert_sorted(&racine->left, data, size, compare)) {
-      return false;
-    }
-    if (racine->left) {
-      racine->left->parent = racine;
-    }
-
-  } else if (pos > 0) { // Right insertion
-    if (!tree_insert_sorted(&racine->right, data, size, compare)) {
-      return false;
-    }
-    if (racine->right) {
-      racine->right->parent = racine;
-    }
-  } else { // duplicate, do nothing
-    return false;
-  }
-
-  rebalance(ptree);
-
+  (*root)->color = BLACK;
   return true;
 }
 
 // Remove the element from a the tree
-void node_delete(Tree *ptree, void *data, void (*delete_func)(void *),
+void node_delete(Tree *root, void *data, void (*del)(void *),
                  int (*compare)(const void *, const void *), size_t size) {
-  if (!ptree || !*ptree) {
+  Tree z = *root;
+  while (z) {
+    int cmp = compare(data, z->data);
+    if (cmp == 0)
+      break;
+    z = (cmp < 0) ? z->left : z->right;
+  }
+  if (!z)
     return;
-  }
 
-  Tree racine = *ptree;
-  int cmp = compare(data, racine->data);
+  Tree y = z;
+  Color orig = y->color;
+  Tree x = NULL, parent = NULL;
 
-  if (cmp < 0) {
-    node_delete(&racine->left, data, delete_func, compare, size);
-  } else if (cmp > 0) {
-    node_delete(&racine->right, data, delete_func, compare, size);
+  if (!z->left) {
+    x = z->right;
+    parent = z->parent;
+    replace_node(root, z, z->right);
+  } else if (!z->right) {
+    x = z->left;
+    parent = z->parent;
+    replace_node(root, z, z->left);
   } else {
-    if (racine->left && racine->right) {
-      // Two childs
-      Tree succ = racine->right;
-      while (succ->left) {
-        succ = succ->left;
-      }
-      memcpy(racine->data, succ->data, size);
-      node_delete(&racine->right, racine->data, delete_func, compare, size);
-    } else {
-      // 0 or 1 child
-      Tree enfant;
-      if (racine->left) {
-        enfant = racine->left;
-      } else {
-        enfant = racine->right;
-      }
-
-      if (delete_func) {
-        delete_func(racine->data);
-      }
-      free(racine);
-
-      *ptree = enfant;
-
-      if (enfant) {
-        enfant->parent = NULL;
-      }
-      return;
+    y = tree_minimum(z->right);
+    orig = y->color;
+    x = y->right;
+    parent = (y->parent == z) ? y : y->parent;
+    if (y->parent != z) {
+      replace_node(root, y, y->right);
+      y->right = z->right;
+      if (y->right)
+        y->right->parent = y;
     }
+    replace_node(root, z, y);
+    y->left = z->left;
+    if (y->left)
+      y->left->parent = y;
+    y->color = z->color;
   }
 
-  rebalance(ptree);
+  if (del)
+    del(z->data);
+  free(z);
+
+  if (orig == BLACK)
+    delete_fixup(root, x, parent);
 }
 
 void tree_pre_order(Tree tree, void (*func)(void *, void *), void *extra_data) {
@@ -286,17 +300,4 @@ void *tree_search(Tree tree, const void *data,
     }
   } else
     return NULL;
-}
-
-static void set(void *data, void *array) {
-  static size_t size;
-  static size_t offset;
-
-  if (data) {
-    memcpy(array + offset, data, size);
-    offset += size;
-  } else {
-    offset = 0;
-    size = *(size_t *)array;
-  }
 }
