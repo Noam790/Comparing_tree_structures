@@ -27,6 +27,63 @@ static void replace_node(Tree *root, Tree oldn, Tree newn) {
     newn->parent = oldn->parent;
 }
 
+// Helps the delete method respecting the red black trees conditions
+static void delete_fixup(Tree *root, Tree x, Tree parent) {
+  while ((x != *root) && (!x || x->color == BLACK)) {
+    bool left_side = (parent && x == parent->left);
+    Tree s = left_side ? parent->right : parent->left;
+
+    if (s && s->color == RED) { // Case 1
+      s->color = BLACK;
+      parent->color = RED;
+      if (left_side)
+        left_rotate(root, parent);
+      else
+        right_rotate(root, parent);
+      s = left_side ? parent->right : parent->left;
+    }
+
+    if ((!s->left || s->left->color == BLACK) &&
+        (!s->right || s->right->color == BLACK)) { // Case 2
+      if (s)
+        s->color = RED;
+      x = parent;
+      parent = x ? x->parent : NULL;
+    } else {
+      if (left_side && (!s->right || s->right->color == BLACK)) { // Case 3
+        if (s->left)
+          s->left->color = BLACK;
+        s->color = RED;
+        right_rotate(root, s);
+        s = parent->right;
+      } else if (!left_side && (!s->left || s->left->color == BLACK)) {
+        if (s->right)
+          s->right->color = BLACK;
+        s->color = RED;
+        left_rotate(root, s);
+        s = parent->left;
+      }
+
+      // Case 4
+      s->color = parent->color;
+      parent->color = BLACK;
+      if (left_side && s->right)
+        s->right->color = BLACK;
+      else if (!left_side && s->left)
+        s->left->color = BLACK;
+
+      if (left_side)
+        left_rotate(root, parent);
+      else
+        right_rotate(root, parent);
+      x = *root;
+      break;
+    }
+  }
+  if (x)
+    x->color = BLACK;
+}
+
 static Tree tree_minimum(Tree n) {
   while (n && n->left)
     n = n->left;
