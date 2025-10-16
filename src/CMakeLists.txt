@@ -1,11 +1,6 @@
 # add_executable(tree tree.c tree.h)
 add_library(bicolor-tree bicolor-tree.c ${CMAKE_SOURCE_DIR}/include/bicolor-tree.h)
 
-set_target_properties(bicolor-tree PROPERTIES
-    VERSION ${PROJECT_VERSION}
-    SOVERSION 1
-)
-
 install(
 	TARGETS bicolor-tree
 	LIBRARY DESTINATION lib

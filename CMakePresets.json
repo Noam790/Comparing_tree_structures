@@ -1,83 +1,127 @@
 {
-  "version": 6,
-  "cmakeMinimumRequired": {
-    "major": 3,
-    "minor": 21
-  },
-  "configurePresets": [
-    {
-      "name": "_base",
-      "hidden": true,
-      "generator": "Unix Makefiles",
-      "binaryDir": "${sourceDir}/build/${presetName}",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "gcc",
-        "BUILD_SHARED_LIBS": "ON"
-      }
-    },
-    {
-      "name": "_linux",
-      "hidden": true,
-      "inherits": "_base",
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Linux"
-      }
-    },
-    {
-      "name": "linux-debug",
-      "displayName": "Linux Debug",
-      "inherits": "_linux",
-      "binaryDir": "${sourceDir}/build/linux/debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/linux/debug/install"
-      }
-    },
-    {
-      "name": "linux-release",
-      "displayName": "Linux Release",
-      "inherits": "_linux",
-      "binaryDir": "${sourceDir}/build/linux/release",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/linux/release/install"
-      }
-    }
-  ],
-  "buildPresets": [
-    {
-      "name": "debug",
-      "displayName": "Build Debug",
-      "configurePreset": "linux-debug",
-      "configuration": "Debug"
-    },
-    {
-      "name": "release",
-      "displayName": "Build Release",
-      "configurePreset": "linux-release",
-      "configuration": "Release"
-    }
-  ],
-  "testPresets": [
-    {
-      "name": "test-debug",
-      "displayName": "Tests (Debug)",
-      "configurePreset": "linux-debug",
-      "configuration": "Debug",
-      "output": {
-        "outputOnFailure": true
-      }
-    },
-    {
-      "name": "test-release",
-      "displayName": "Tests (Release)",
-      "configurePreset": "linux-release",
-      "configuration": "Release",
-      "output": {
-        "outputOnFailure": true
-      }
-    }
-  ]
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "_base",
+            "hidden": true,
+            "generator": "Ninja Multi-Config",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "installDir": "${sourceDir}/build/install/${presetName}",
+            "cacheVariables": {
+              "CMAKE_C_COMPILER": "clang", 
+              "CMAKE_CXX_COMPILER": "clang++",
+              "BUILD_SHARED_LIBS": "ON"
+            }
+        },
+        {
+            "name": "windows",
+            "inherits": "_base",
+            "displayName": "Windows",
+            "description": "Setup for Windows",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "linux",
+            "inherits": "_base",
+            "displayName": "Linux",
+            "description": "Setup for Linux",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "macos",
+            "inherits": "_base",
+            "displayName": "MacOs",
+            "description": "Setup for MacOs",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "windows-debug",
+            "displayName": "Debug",
+            "configurePreset": "windows",
+            "configuration": "Debug"
+        },
+        {
+            "name": "windows-release",
+            "displayName": "Release",
+            "configurePreset": "windows",
+            "configuration": "Release"
+        },
+        {
+            "name": "linux-debug",
+            "displayName": "Debug",
+            "configurePreset": "linux",
+            "configuration": "Debug"
+        },
+        {
+            "name": "linux-release",
+            "displayName": "Release",
+            "configurePreset": "linux",
+            "configuration": "Release"
+        },
+        {
+            "name": "macos-debug",
+            "displayName": "Debug",
+            "configurePreset": "macos",
+            "configuration": "Debug"
+        },
+        {
+            "name": "macos-release",
+            "displayName": "Release",
+            "configurePreset": "macos",
+            "configuration": "Release"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "windows-debug",
+            "displayName": "Debug",
+            "configurePreset": "windows",
+            "configuration": "Debug"
+        },
+        {
+            "name": "windows-release",
+            "displayName": "Release",
+            "configurePreset": "windows",
+            "configuration": "Release"
+        },
+        {
+            "name": "linux-debug",
+            "displayName": "Debug",
+            "configurePreset": "linux",
+            "configuration": "Debug",
+            "environment": {}
+        },
+        {
+            "name": "linux-release",
+            "displayName": "Release",
+            "configurePreset": "linux",
+            "configuration": "Release"
+        },
+        {
+            "name": "macos-debug",
+            "displayName": "Debug",
+            "configurePreset": "macos",
+            "configuration": "Debug"
+        },
+        {
+            "name": "macos-release",
+            "displayName": "Release",
+            "configurePreset": "macos",
+            "configuration": "Release"
+        }
+    ]
 }
