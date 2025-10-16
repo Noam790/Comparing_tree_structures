@@ -1,4 +1,4 @@
-#include "tree.h"
+#include "bicolor-tree.h"
 #include "min-max.h"
 #include <stdbool.h>
 #include <string.h>

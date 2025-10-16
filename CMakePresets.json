@@ -16,40 +16,65 @@
       }
     },
     {
-      "name": "debug",
-      "displayName": "Debug",
-      "description": "Debug build",
+      "name": "linux",
+      "hidden": true,
       "inherits": "base",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "BUILD_TESTING": "ON"
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     },
     {
-      "name": "release",
-      "displayName": "Release",
-      "description": "Release build",
-      "inherits": "base",
+      "name": "linux-debug",
+      "displayName": "Linux Debug",
+      "inherits": "linux",
+      "binaryDir": "${sourceDir}/build/linux/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/linux/debug/install"
+      }
+    },
+    {
+      "name": "linux-release",
+      "displayName": "Linux Release",
+      "inherits": "linux",
+      "binaryDir": "${sourceDir}/build/linux/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "BUILD_TESTING": "OFF"
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/linux/release/install"
       }
     }
   ],
   "buildPresets": [
     {
       "name": "debug",
-      "configurePreset": "debug"
+      "displayName": "Build Debug",
+      "configurePreset": "linux-debug",
+      "configuration": "Debug"
     },
     {
       "name": "release",
-      "configurePreset": "release"
+      "displayName": "Build Release",
+      "configurePreset": "linux-release",
+      "configuration": "Release"
     }
   ],
   "testPresets": [
     {
-      "name": "debug",
-      "configurePreset": "debug",
+      "name": "test-debug",
+      "displayName": "Tests (Debug)",
+      "configurePreset": "linux-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "test-release",
+      "displayName": "Tests (Release)",
+      "configurePreset": "linux-release",
+      "configuration": "Release",
       "output": {
         "outputOnFailure": true
       }

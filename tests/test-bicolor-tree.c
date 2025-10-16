@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "tree.h"
+#include "bicolor-tree.h"
 
 void monPrintF (void * a, void * b){
     printf("Valeur du noeud : %d\n", *(int*)a);
@@ -46,7 +46,6 @@ void testArbresBinaires(void){
 
 
 int main(){
-
     testArbresBinaires();
 
     return EXIT_SUCCESS;
