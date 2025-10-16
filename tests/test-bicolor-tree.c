@@ -3,15 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+clock_t start, end;
+double time_ct;
 
 // Comparators
 int compare_int(const void *a, const void *b) {
   int va = *(int *)a, vb = *(int *)b;
   return (va < vb) ? -1 : (va > vb);
-}
-
-int compare_str(const void *a, const void *b) {
-  return strcmp(*(const char **)a, *(const char **)b);
 }
 
 typedef struct {
@@ -24,9 +24,31 @@ int compare_dico(const void *a, const void *b) {
   return strcmp(da->word, db->word);
 }
 
+
+double test_insert_complexity(Tree *root, int *values, size_t n){
+  start = clock();
+  for (size_t i = 0; i < n; i++) {
+    tree_insert_sorted(root, &values[i], sizeof(int), compare_int);
+  }
+
+  end = clock();
+  time_ct = (double)(end - start) / CLOCKS_PER_SEC;
+  return time_ct;
+}
+
+double test_delete_complexity(Tree *root, int *values, size_t n){
+  start = clock();
+  for (size_t i = 0; i < n; i++) {
+    node_delete(root, &values[i], NULL, compare_int, sizeof(int));
+  }
+
+  end = clock();
+  time_ct = (double)(end - start) / CLOCKS_PER_SEC;
+  return time_ct;
+}
+
 // Print functions
 void print_int(void *data) { printf("%d", *(int *)data); }
-void print_str(void *data) { printf("%s", *(char **)data); }
 void print_hashmap(void *data) {
   Hashmap *d = data;
   printf("%s -> %s", d->word, d->definition);
@@ -45,27 +67,24 @@ void print_tree(Tree tree, void (*print)(void *), int depth) {
   print_tree(tree->right, print, depth + 1);
 }
 
-// Test values
+// Test values + int complexity
 void test_int() {
   Tree root = NULL;
   int values[] = {10, 20, 5, 15, 2, 25, 7, 12};
-  size_t n = sizeof(values) / sizeof(values[0]);
-
-  for (size_t i = 0; i < n; i++) {
-    printf("Inserting value: %d\n", values[i]);
-    tree_insert_sorted(&root, &values[i], sizeof(int), compare_int);
-  }
+  size_t n = sizeof(values) / sizeof(int);
+  
+  double time_insert = test_insert_complexity(&root, values, n); // time between 8 insertions
+  printf("\n Insertion time : %fsec for %ld values", time_insert, sizeof(values) / sizeof(int));
 
   printf("\n Integer tree after inserting:\n");
   print_tree(root, print_int, 0);
   printf("\n");
 
   int delete_vals[] = {20, 5, 10};
-  size_t m = sizeof(delete_vals) / sizeof(delete_vals[0]);
-  for (size_t i = 0; i < m; i++) {
-    printf("Deleting value: %d\n", delete_vals[i]);
-    node_delete(&root, &delete_vals[i], NULL, compare_int, sizeof(int));
-  }
+  size_t n_del = sizeof(delete_vals) / sizeof(int);
+  double time_delete = test_delete_complexity(&root, delete_vals, n_del);
+
+  printf("\n Deletion time : %fsec for %ld values", time_delete, sizeof(delete_vals) / sizeof(int)); // time between 3 deletions
 
   printf("\n Integer tree after deleting:\n");
   print_tree(root, print_int, 0);
@@ -73,35 +92,8 @@ void test_int() {
   printf("\n");
 }
 
-void test_strings() {
-  Tree root = NULL;
-  const char *words[] = {"orange", "apple", "strawberry",
-                         "banana", "kiwi",  "mango"};
-  size_t n = sizeof(words) / sizeof(words[0]);
 
-  for (size_t i = 0; i < n; i++) {
-    printf("Inserting value: %s\n", words[i]);
-    tree_insert_sorted(&root, &words[i], sizeof(char *), compare_str);
-  }
-
-  printf("\nString tree after inserting:\n");
-  print_tree(root, print_str, 0);
-  printf("\n");
-
-  const char *delete_words[] = {"banana", "kiwi"};
-  size_t m = sizeof(delete_words) / sizeof(delete_words[0]);
-  for (size_t i = 0; i < m; i++) {
-    printf("Deleting value: %s\n", delete_words[i]);
-    node_delete(&root, &delete_words[i], NULL, compare_str, sizeof(char *));
-  }
-
-  printf("\nString tree after deleting:\n");
-  print_tree(root, print_str, 0);
-  tree_delete(root, NULL);
-  printf("\n");
-}
-
-void test_struct() {
+void test_hashmap() {
   Tree root = NULL;
   Hashmap entries[] = {{"cat", "domestic animal"},
                        {"dog", "man's best friend"},
@@ -134,7 +126,6 @@ void test_struct() {
 
 int main() {
   test_int();
-  test_strings();
-  test_struct();
+  // test_hashmap();
   return 0;
 }
