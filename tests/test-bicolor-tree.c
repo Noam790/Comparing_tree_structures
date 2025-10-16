@@ -8,6 +8,17 @@
 clock_t start, end;
 double time_ct;
 
+int *random_list(size_t size) {
+  static int *list;
+  list = malloc(sizeof(int) * size);
+
+  for (int i = 0; i < size; i++) {
+    list[i] = rand() % 5000;
+  }
+
+  return list;
+}
+
 // Comparators
 int compare_int(const void *a, const void *b) {
   int va = *(int *)a, vb = *(int *)b;
@@ -24,8 +35,7 @@ int compare_dico(const void *a, const void *b) {
   return strcmp(da->word, db->word);
 }
 
-
-double test_insert_complexity(Tree *root, int *values, size_t n){
+double test_insert_complexity(Tree *root, int *values, size_t n) {
   start = clock();
   for (size_t i = 0; i < n; i++) {
     tree_insert_sorted(root, &values[i], sizeof(int), compare_int);
@@ -36,7 +46,7 @@ double test_insert_complexity(Tree *root, int *values, size_t n){
   return time_ct;
 }
 
-double test_delete_complexity(Tree *root, int *values, size_t n){
+double test_delete_complexity(Tree *root, int *values, size_t n) {
   start = clock();
   for (size_t i = 0; i < n; i++) {
     node_delete(root, &values[i], NULL, compare_int, sizeof(int));
@@ -70,28 +80,27 @@ void print_tree(Tree tree, void (*print)(void *), int depth) {
 // Test values + int complexity
 void test_int() {
   Tree root = NULL;
-  int values[] = {10, 20, 5, 15, 2, 25, 7, 12};
-  size_t n = sizeof(values) / sizeof(int);
-  
-  double time_insert = test_insert_complexity(&root, values, n); // time between 8 insertions
-  printf("\n Insertion time : %fsec for %ld values", time_insert, sizeof(values) / sizeof(int));
+  size_t n = 40000000;
+  int *values = random_list(n);
+
+  double time_insert =
+      test_insert_complexity(&root, values, n); // time between 8 insertions
+  printf("\n Insertion time : %fsec for %ld values", time_insert, n);
 
   printf("\n Integer tree after inserting:\n");
-  print_tree(root, print_int, 0);
+  // print_tree(root, print_int, 0);
   printf("\n");
 
-  int delete_vals[] = {20, 5, 10};
-  size_t n_del = sizeof(delete_vals) / sizeof(int);
-  double time_delete = test_delete_complexity(&root, delete_vals, n_del);
+  double time_delete = test_delete_complexity(&root, values, n / 2);
 
-  printf("\n Deletion time : %fsec for %ld values", time_delete, sizeof(delete_vals) / sizeof(int)); // time between 3 deletions
+  printf("\n Deletion time : %fsec for %ld values", time_delete,
+         n / 2); // time between 3 deletions
 
   printf("\n Integer tree after deleting:\n");
-  print_tree(root, print_int, 0);
+  // print_tree(root, print_int, 0);
   tree_delete(root, NULL);
   printf("\n");
 }
-
 
 void test_hashmap() {
   Tree root = NULL;
