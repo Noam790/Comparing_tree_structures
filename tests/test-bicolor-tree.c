@@ -78,28 +78,26 @@ void print_tree(Tree tree, void (*print)(void *), int depth) {
 }
 
 // Test values + int complexity
-void test_int() {
-  Tree root = NULL;
-  size_t n = 40000000;
-  int *values = random_list(n);
+void test_int() { // add n values and delete n/2 values
+  size_t sizes[] = {10, 1000, 10000, 100000, 1000000, 10000000, 100000000};
+  size_t num_sizes = sizeof(sizes) / sizeof(sizes[0]);
 
-  double time_insert =
-      test_insert_complexity(&root, values, n); // time between 8 insertions
-  printf("\n Insertion time : %fsec for %ld values", time_insert, n);
+  for (size_t i = 0; i < num_sizes; i++) {
+    size_t n = sizes[i];
+    printf("\n=== Testing %zu values ===\n", n);
 
-  printf("\n Integer tree after inserting:\n");
-  // print_tree(root, print_int, 0);
-  printf("\n");
+    Tree root = NULL;
+    int *values = random_list(n);
 
-  double time_delete = test_delete_complexity(&root, values, n / 2);
+    double time_insert = test_insert_complexity(&root, values, n);
+    printf("Insertion time: %f sec for %zu values\n", time_insert, n);
 
-  printf("\n Deletion time : %fsec for %ld values", time_delete,
-         n / 2); // time between 3 deletions
+    double time_delete = test_delete_complexity(&root, values, n / 2);
+    printf("Deletion time: %f sec for %zu values\n", time_delete, n / 2);
 
-  printf("\n Integer tree after deleting:\n");
-  // print_tree(root, print_int, 0);
-  tree_delete(root, NULL);
-  printf("\n");
+    tree_delete(root, NULL);
+    free(values);
+  }
 }
 
 void test_hashmap() {

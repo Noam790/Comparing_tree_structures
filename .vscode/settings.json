@@ -1,8 +1,0 @@
-{
-  "files.exclude": {
-    "**/.vscode": true,
-  },
-  "files.eol": "\n",
-  "editor.defaultFormatter": "xaver.clang-format",
-  "editor.formatOnSave": true
-}
