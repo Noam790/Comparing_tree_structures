@@ -5,15 +5,17 @@
 #include <string.h>
 #include <time.h>
 
+#define NB_TESTS 13
+
 clock_t start, end;
 double time_ct;
 
-int *random_list(size_t size) {
+int *unique_list(size_t size) {
   static int *list;
   list = malloc(sizeof(int) * size);
 
   for (int i = 0; i < size; i++) {
-    list[i] = rand() % 5000;
+    list[i] = i;
   }
 
   return list;
@@ -29,6 +31,12 @@ typedef struct {
   char word[50];
   char definition[200];
 } Hashmap;
+
+typedef struct {
+  size_t n;
+  double insert_time;
+  double delete_time;
+} Result;
 
 int compare_dico(const void *a, const void *b) {
   const Hashmap *da = a, *db = b;
@@ -78,26 +86,43 @@ void print_tree(Tree tree, void (*print)(void *), int depth) {
 }
 
 // Test values + int complexity
-void test_int() { // add n values and delete n/2 values
-  size_t sizes[] = {10, 1000, 10000, 100000, 1000000, 10000000, 100000000};
-  size_t num_sizes = sizeof(sizes) / sizeof(sizes[0]);
+void test_int()
+{
+  // add n values and delete n/2 values
+  size_t sizes[] = {10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000};
+  Result results[NB_TESTS];
 
-  for (size_t i = 0; i < num_sizes; i++) {
+  for (int i = 0; i < NB_TESTS; i++) {
     size_t n = sizes[i];
-    printf("\n=== Testing %zu values ===\n", n);
-
+    int *values = unique_list(n);
     Tree root = NULL;
-    int *values = random_list(n);
 
-    double time_insert = test_insert_complexity(&root, values, n);
-    printf("Insertion time: %f sec for %zu values\n", time_insert, n);
-
-    double time_delete = test_delete_complexity(&root, values, n / 2);
-    printf("Deletion time: %f sec for %zu values\n", time_delete, n / 2);
+    results[i].n = n;
+    results[i].insert_time = test_insert_complexity(&root, values, n);
+    results[i].delete_time = test_delete_complexity(&root, values, n / 2);
 
     tree_delete(root, NULL);
     free(values);
   }
+
+  // Write our results into a csv file
+#ifdef _WIN32
+  system("mkdir ..\\..\\result 2>nul");
+  const char* python_cmd = "python ../../src/plot_results.py ../../result/results.csv";
+#else
+  system("mkdir -p ../../result");
+  const char* python_cmd = "python3 ../../src/plot_results.py ../../result/results.csv";
+#endif
+
+  FILE *f = fopen("../../result/results.csv", "w");
+
+  fprintf(f, "n,insert_time,delete_time\n");
+  for (int i = 0; i < NB_TESTS; i++) {
+    fprintf(f, "%zu,%.10f,%.10f\n", results[i].n, results[i].insert_time, results[i].delete_time);
+  }
+  fclose(f);
+
+  system(python_cmd); // Generate plot
 }
 
 void test_hashmap() {
