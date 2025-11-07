@@ -1,37 +1,37 @@
 # add_executable(tree tree.c tree.h)
-add_library(bicolor-tree SHARED bicolor-tree.c ../include/bicolor-tree.h)
+add_library(avl-tree SHARED avl-tree.c ../../include/avl-tree.h)
 
-target_include_directories(bicolor-tree PUBLIC
+target_include_directories(avl-tree PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:include>
 )
 
-set_target_properties(bicolor-tree PROPERTIES
+set_target_properties(avl-tree PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION 1
 )
 
 install(
-	TARGETS bicolor-tree
+	TARGETS avl-tree
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
 	RUNTIME DESTINATION bin
 )
 
 install(
-	FILES ../include/bicolor-tree.h
+	FILES ../../include/avl-tree.h
 	DESTINATION include
 )
 
 # Ajout d'un fichier de configuration de type pkgconfig. Copie le 1er argument vers le 2ème. @ONLY = restreint le remplacement de variable dans tree.pc.in
 # à celles qui ont le format @<var>@ pour éviter les conflits avec la syntaxe CMake ${<var>}.
 configure_file(
-	${CMAKE_CURRENT_SOURCE_DIR}/bicolor-tree.pc.in
-	${CMAKE_CURRENT_BINARY_DIR}/bicolor-tree.pc
+		avl-tree.pc.in
+	${CMAKE_CURRENT_BINARY_DIR}/avl-tree.pc
 	@ONLY
 )
 install(
-	FILES ${CMAKE_CURRENT_BINARY_DIR}/bicolor-tree.pc
+	FILES ${CMAKE_CURRENT_BINARY_DIR}/avl-tree.pc
 	DESTINATION share/pkgconfig
 	COMPONENT "PkgConfig"
 )
@@ -39,11 +39,11 @@ install(
 #  Ajout d'un fichier de configuration de type cmake
 include(CMakePackageConfigHelpers)
 configure_package_config_file(
-	${CMAKE_CURRENT_SOURCE_DIR}/BicolorTreeConfig.cmake.in
-	${CMAKE_CURRENT_BINARY_DIR}/BicolorTreeConfig.cmake
+		AvlTreeConfig.cmake.in
+	${CMAKE_CURRENT_BINARY_DIR}/AvlTreeConfig.cmake
 	INSTALL_DESTINATION cmake
 )
 install(
-	FILES ${CMAKE_CURRENT_BINARY_DIR}/BicolorTreeConfig.cmake
+	FILES ${CMAKE_CURRENT_BINARY_DIR}/AvlTreeConfig.cmake
 	DESTINATION cmake
 )

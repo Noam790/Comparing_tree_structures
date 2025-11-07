@@ -1,0 +1,9 @@
+# see https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
+
+@PACKAGE_INIT@
+
+set_and_check(AVL_TREE_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include")
+set_and_check(AVL_TREE_LIB_DIRS "${PACKAGE_PREFIX_DIR}/lib")
+set(AVL_TREE_LIBRARIES avl-tree)
+
+check_required_components(AvlTree)

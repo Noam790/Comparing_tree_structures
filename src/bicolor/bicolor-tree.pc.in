@@ -6,9 +6,9 @@ includedir=${prefix}/include
 
 Version: @PROJECT_VERSION@
 
-Name: tree
-Description: List library
+Name: BicolorTree
+Description: Red-Black Tree library
 
 Requires:
-Libs: -L${bindir} -L${staticlibdir} -L${sharedlibdir} -ltree
+Libs: -L${bindir} -L${staticlibdir} -L${sharedlibdir} -lbicolor-tree
 Cflags: -I${includedir}

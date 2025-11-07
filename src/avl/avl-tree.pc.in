@@ -1,0 +1,14 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+bindir=${prefix}/bin
+staticlibdir=${prefix}/lib
+sharedlibdir=${prefix}/lib
+includedir=${prefix}/include
+
+Version: @PROJECT_VERSION@
+
+Name: AvlTree
+Description: AVL Tree library
+
+Requires:
+Libs: -L${bindir} -L${staticlibdir} -L${sharedlibdir} -lavl-tree
+Cflags: -I${includedir}

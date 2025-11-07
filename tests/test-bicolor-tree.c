@@ -1,5 +1,5 @@
 #include "bicolor-tree.h"
-#include <assert.h>
+#include "test.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,17 +26,6 @@ int compare_int(const void *a, const void *b) {
   int va = *(int *)a, vb = *(int *)b;
   return (va < vb) ? -1 : (va > vb);
 }
-
-typedef struct {
-  char word[50];
-  char definition[200];
-} Hashmap;
-
-typedef struct {
-  size_t n;
-  double insert_time;
-  double delete_time;
-} Result;
 
 int compare_dico(const void *a, const void *b) {
   const Hashmap *da = a, *db = b;
@@ -65,6 +54,16 @@ double test_delete_complexity(Tree *root, int *values, size_t n) {
   return time_ct;
 }
 
+double test_search_complexity(Tree *root, int *values, size_t n) {
+  start = clock();
+  for (size_t i = 0; i < n; i++) {
+    tree_search(*root, &values[i], compare_int);
+  }
+  end = clock();
+  time_ct = (double)(end - start) / CLOCKS_PER_SEC;
+  return time_ct;
+}
+
 // Print functions
 void print_int(void *data) { printf("%d", *(int *)data); }
 void print_hashmap(void *data) {
@@ -88,7 +87,7 @@ void print_tree(Tree tree, void (*print)(void *), int depth) {
 // Test values + int complexity
 void test_int()
 {
-  // add n values and delete n/2 values
+  // add n values and delete n values
   size_t sizes[] = {10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000};
   Result results[NB_TESTS];
 
@@ -98,8 +97,9 @@ void test_int()
     Tree root = NULL;
 
     results[i].n = n;
-    results[i].insert_time = test_insert_complexity(&root, values, n);
-    results[i].delete_time = test_delete_complexity(&root, values, n / 2);
+    results[i].insert_time = test_insert_complexity(&root, values, n); // insert all values
+    results[i].search_time = test_search_complexity(&root, values, n); // search for all values
+    results[i].delete_time = test_delete_complexity(&root, values, n); // delete all values
 
     tree_delete(root, NULL);
     free(values);
@@ -108,17 +108,17 @@ void test_int()
   // Write our results into a csv file
 #ifdef _WIN32
   system("mkdir ..\\..\\result 2>nul");
-  const char* python_cmd = "python ../../src/plot_results.py ../../result/results.csv";
+  const char* python_cmd = "python ../../src/plot_results.py ../../result/results_bicolor.csv bicolor";
 #else
   system("mkdir -p ../../result");
-  const char* python_cmd = "python3 ../../src/plot_results.py ../../result/results.csv";
+  const char* python_cmd = "python3 ../../src/plot_results.py ../../result/results_bicolor.csv bicolor";
 #endif
 
-  FILE *f = fopen("../../result/results.csv", "w");
+  FILE *f = fopen("../../result/results_bicolor.csv", "w");
 
-  fprintf(f, "n,insert_time,delete_time\n");
+  fprintf(f, "n,insert_time,search_time,delete_time\n");
   for (int i = 0; i < NB_TESTS; i++) {
-    fprintf(f, "%zu,%.10f,%.10f\n", results[i].n, results[i].insert_time, results[i].delete_time);
+    fprintf(f, "%zu,%.10f,%.10f, %10f\n", results[i].n, results[i].insert_time, results[i].search_time, results[i].delete_time);
   }
   fclose(f);
 
