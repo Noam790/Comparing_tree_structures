@@ -118,7 +118,7 @@ void test_int()
 
   fprintf(f, "n,insert_time,search_time,delete_time\n");
   for (int i = 0; i < NB_TESTS; i++) {
-    fprintf(f, "%zu,%.10f,%.10f, %10f\n", results[i].n, results[i].insert_time, results[i].search_time, results[i].delete_time);
+    fprintf(f, "%zu,%.10f,%.10f, %.10f\n", results[i].n, results[i].insert_time, results[i].search_time, results[i].delete_time);
   }
   fclose(f);
 
