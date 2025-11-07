@@ -1,12 +1,12 @@
-#ifndef _TREE_H_
-#define _TREE_H_
+#ifndef TREE_H
+#define TREE_H
 
 #include <stdbool.h>
 #include <stdlib.h>
 
-typedef struct _TreeNode *Tree;
+typedef struct _AvlTreeNode *Tree;
 
-struct _TreeNode {
+struct _AvlTreeNode {
   Tree parent;
   Tree left;
   Tree right;

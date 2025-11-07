@@ -1,8 +1,5 @@
-
-
 #include "avl-tree.h"
 #include "min-max.h"
-#include <stdbool.h>
 #include <string.h>
 
 /*--------------------------------------------------------------------*/
@@ -92,7 +89,7 @@ void rebalance(Tree *ptree) {
 }
 
 Tree tree_create(const void *data, size_t size) {
-  Tree tree = malloc(sizeof(struct _TreeNode) + size);
+  Tree tree = malloc(sizeof(struct _AvlTreeNode) + size);
   if (tree) {
     tree->left = NULL;
     tree->right = NULL;

@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-// Add method to get grand parent / uncle / min tree
+// Add method to get grandparent / uncle / min tree
 
 static Tree get_grandparent(Tree n) {
   return (n && n->parent) ? n->parent->parent : NULL;
@@ -144,7 +144,7 @@ void right_rotate(Tree *root, Tree x) {
 }
 
 Tree tree_create(const void *data, size_t size) {
-  Tree tree = malloc(sizeof(struct _TreeNode) + size);
+  Tree tree = malloc(sizeof(struct _BicolorTreeNode) + size);
   if (tree) {
     tree->left = NULL;
     tree->right = NULL;
@@ -265,7 +265,7 @@ bool tree_insert_sorted(Tree *root, const void *data, size_t size,
   return true;
 }
 
-// Remove the element from a the tree
+// Remove the element from the tree
 void node_delete(Tree *root, void *data, void (*del)(void *),
                  int (*compare)(const void *, const void *), size_t size) {
   Tree z = *root;

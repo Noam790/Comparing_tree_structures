@@ -1,10 +1,12 @@
 file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/test-*.c")
 
+set(TEST_UTILS "${CMAKE_CURRENT_SOURCE_DIR}/test_utils.c")
+
 if(TEST_SOURCES)
     foreach(TEST_FILE ${TEST_SOURCES})
         get_filename_component(TEST_NAME ${TEST_FILE} NAME_WE)
 
-        add_executable(${TEST_NAME} ${TEST_FILE})
+        add_executable(${TEST_NAME} ${TEST_FILE} ${TEST_UTILS})
 
         target_link_libraries(${TEST_NAME} PRIVATE bicolor-tree avl-tree)
 
