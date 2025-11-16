@@ -1,6 +1,17 @@
 #include "test.h"
 #include "avl-tree.h"
 
+// Write results to CSV
+#ifdef _WIN32
+const char* result_path_cmd = "mkdir ..\\..\\result 2>nul";
+const char *python_cmd =
+    "python ../../src/plot_results.py ../../result/results_avl.csv avl";
+#else
+const char* result_path_cmd = "mkdir -p ../../result";
+const char *python_cmd =
+    "python3 ../../src/plot_results.py ../../result/results_avl.csv avl";
+#endif
+
 void print_avl_tree(Tree tree, void (*print)(void *), int depth) {
     if (!tree)
         return;
@@ -37,17 +48,8 @@ void test_int() {
         free(values);
     }
 
-    // Write results to CSV
-#ifdef _WIN32
-    system("mkdir ..\\..\\result 2>nul");
-    const char *python_cmd =
-        "python ../../src/plot_results.py ../../result/results_avl.csv avl";
-#else
-    system("mkdir -p ../../result");
-    const char *python_cmd =
-        "python3 ../../src/plot_results.py ../../result/results_avl.csv avl";
-#endif
 
+    system(result_path_cmd);
     FILE *f = fopen("../../result/results_avl.csv", "w");
     fprintf(f, "n,insert_time,search_time,delete_time\n");
     for (int i = 0; i < NB_TESTS; i++) {
@@ -97,6 +99,6 @@ void test_hashmap() {
 
 int main() {
     test_int();
-    // test_hashmap();
+    test_hashmap();
     return 0;
 }

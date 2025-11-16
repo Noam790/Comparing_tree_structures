@@ -1,6 +1,15 @@
 #include "test.h"
 #include "bicolor-tree.h"
 
+// Write our results into a csv file
+#ifdef _WIN32
+const char* result_path_cmd = "mkdir ..\\..\\result 2>nul";
+const char* python_cmd = "python ../../src/plot_results.py ../../result/results_bicolor.csv bicolor";
+#else
+const char* result_path_cmd = "mkdir -p ../../result";
+const char* python_cmd = "python3 ../../src/plot_results.py ../../result/results_bicolor.csv bicolor";
+#endif
+
 void print_bicolor_tree(Tree tree, void (*print)(void *), int depth) {
   if (!tree)
     return;
@@ -36,15 +45,7 @@ void test_int()
     free(values);
   }
 
-  // Write our results into a csv file
-#ifdef _WIN32
-  system("mkdir ..\\..\\result 2>nul");
-  const char* python_cmd = "python ../../src/plot_results.py ../../result/results_bicolor.csv bicolor";
-#else
-  system("mkdir -p ../../result");
-  const char* python_cmd = "python3 ../../src/plot_results.py ../../result/results_bicolor.csv bicolor";
-#endif
-
+  system(result_path_cmd);
   FILE *f = fopen("../../result/results_bicolor.csv", "w");
 
   fprintf(f, "n,insert_time,search_time,delete_time\n");
@@ -89,6 +90,6 @@ void test_hashmap() {
 
 int main() {
   test_int();
-  // test_hashmap();
+  test_hashmap();
   return 0;
 }

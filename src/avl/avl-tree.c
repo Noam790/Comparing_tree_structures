@@ -310,24 +310,3 @@ static void set(void *data, void *array) {
     size = *(size_t *)array;
   }
 }
-
-int tree_sort(void *array, size_t length, size_t size,
-              int (*compare)(const void *, const void *)) {
-  size_t i;
-  Tree tree = tree_new();
-  void *pointer;
-
-  pointer = array;
-  for (i = 0; i < length; i++) {
-    if (tree_insert_sorted(&tree, pointer, size, compare))
-      pointer += size;
-    else {
-      tree_delete(tree, NULL);
-      return false;
-    }
-  }
-  set(NULL, &size);
-  tree_in_order(tree, set, array);
-  tree_delete(tree, NULL);
-  return true;
-}
