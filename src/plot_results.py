@@ -7,7 +7,7 @@ from matplotlib.ticker import LogLocator
 
 csv_path = sys.argv[1]
 tree_type = sys.argv[2]
-png_path = os.path.join(os.path.dirname(csv_path), f"time_complexity of_{tree_type}.png")
+png_path = os.path.join(os.path.dirname(csv_path), f"time_complexity_of_{tree_type}.png")
 
 df = pd.read_csv(csv_path)
 

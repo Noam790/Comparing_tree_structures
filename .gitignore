@@ -2,6 +2,5 @@ build/
 .vscode/**
 .idea/
 .venv/
-result/
 !.vscode/extensions.json
 !.vscode/settings.json

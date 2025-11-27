@@ -192,6 +192,18 @@ Both trees guarantee **O(log n)** time complexity for all operations:
 - Both significantly outperform unbalanced BSTs
 - Both scale logarithmically (much better than linear f(n) = n)
 
+**Actual observations**
+**AVL Tree Performance:**
+
+![AVL Tree Performance Graph](result/time_complexity%20of_avl.png)
+
+**Red-Black Tree Performance:**
+
+![Red-Black Tree Performance Graph](result/time_complexity%20of_bicolor.png)
+
+- As shown in the charts, both trees offer similar overall performance.
+  The main difference is that AVL trees perform significantly more rotations, which slightly increases insertion and deletion time.
+
 ## Authors
 | <a href="https://gitlab.univ-lr.fr/nchamoua"> <img src="https://gitlab.univ-lr.fr/uploads/-/system/user/avatar/2426/avatar.png?width=800" width="64" height="64"> </a> | **Nom :** Noam Chamouard <br> **GitLab :** [mon profil](https://gitlab.univ-lr.fr/nchamoua) |
 | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
