@@ -32,30 +32,47 @@ void print_hashmap(void *data) {
     printf("%s -> %s", d->word, d->definition);
 }
 
-double test_insert_complexity(void *root, int *values, size_t n, InsertFunc insert) {
-    clock_t start = clock();
+double test_insert_complexity(void **root, int *values, size_t n, InsertFunc insert) {
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
     for (size_t i = 0; i < n; i++) {
         insert(root, &values[i], sizeof(int), compare_int);
     }
-    clock_t end = clock();
-    return (double)(end - start) / CLOCKS_PER_SEC;
+
+    clock_gettime(CLOCK_MONOTONIC, &end);
+
+    return (end.tv_sec - start.tv_sec) +
+           (end.tv_nsec - start.tv_nsec) * 1e-9;
 }
 
-double test_delete_complexity(void *root, int *values, size_t n, DeleteFunc del) {
-    clock_t start = clock();
+double test_delete_complexity(void **root, int *values, size_t n, DeleteFunc del) {
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
     for (size_t i = 0; i < n; i++) {
         del(root, &values[i], NULL, compare_int, sizeof(int));
     }
-    clock_t end = clock();
-    return (double)(end - start) / CLOCKS_PER_SEC;
+
+    clock_gettime(CLOCK_MONOTONIC, &end);
+
+    return (end.tv_sec - start.tv_sec) +
+           (end.tv_nsec - start.tv_nsec) * 1e-9;
 }
 
-double test_search_complexity(void *root, int *values, size_t n, SearchFunc search) {
-    clock_t start = clock();
+double test_search_complexity(void **root, int *values, size_t n, SearchFunc search) {
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
     for (size_t i = 0; i < n; i++) {
-        search(root, &values[i], compare_int);
+        /* search prend un Tree, donc cast du pointeur contenu dans root */
+        search(*root, &values[i], compare_int);
     }
-    clock_t end = clock();
-    return (double)(end - start) / CLOCKS_PER_SEC;
+
+    clock_gettime(CLOCK_MONOTONIC, &end);
+
+    return (end.tv_sec - start.tv_sec) +
+           (end.tv_nsec - start.tv_nsec) * 1e-9;
 }
+
 

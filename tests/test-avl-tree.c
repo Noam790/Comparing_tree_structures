@@ -31,7 +31,7 @@ void print_avl_tree(Tree tree, void (*print)(void *), int depth) {
 void test_int() {
     size_t sizes[] = {10, 50, 100, 500, 1000, 5000, 10000,
                   50000, 100000, 500000, 1000000, 5000000, 10000000,
-                  20000000, 50000000};
+                  20000000, 50000000, 100000000};
     Result results[NB_TESTS];
 
     for (int i = 0; i < NB_TESTS; i++) {

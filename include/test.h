@@ -1,6 +1,6 @@
 #ifndef TEST_H
 #define TEST_H
-#define NB_TESTS 15
+#define NB_TESTS 16 // 16 values in the test array
 
 #include <stdlib.h>
 #include <string.h>
@@ -67,20 +67,20 @@ typedef void *(*SearchFunc)(void *root, const void *data,
  * 'insert' is the insertion function to test.
  * Returns elapsed time in seconds.
  */
-double test_insert_complexity(void *root, int *values, size_t n, InsertFunc insert);
+double test_insert_complexity(void **root, int *values, size_t n, InsertFunc insert);
 
 /**
  * Measure the time to delete 'n' integer values from the tree.
  * 'del' is the deletion function to test.
  * Returns elapsed time in seconds.
  */
-double test_delete_complexity(void *root, int *values, size_t n, DeleteFunc del);
+double test_delete_complexity(void **root, int *values, size_t n, DeleteFunc del);
 
 /**
  * Measure the time to search for 'n' integer values in the tree.
  * 'search' is the search function to test.
  * Returns elapsed time in seconds.
  */
-double test_search_complexity(void *root, int *values, size_t n, SearchFunc search);
+double test_search_complexity(void **root, int *values, size_t n, SearchFunc search);
 
 #endif // TEST_H

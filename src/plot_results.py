@@ -29,7 +29,7 @@ plt.plot(n_values, search_times, marker='*', label="Searching", color='green')
 plt.plot(n_values, ref_line, linestyle='--', color='gray', label="f(n) = n")
 
 plt.xscale("log")
-plt.yscale("log")
+plt.yscale("linear")
 
 plt.xticks(n_values, [str(n) for n in n_values], rotation=45)
 plt.gca().xaxis.set_major_locator(LogLocator(base=10.0, subs=np.arange(1.0, 10.0)*0.1, numticks=20))
