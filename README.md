@@ -195,11 +195,11 @@ Both trees guarantee **O(log n)** time complexity for all operations:
 **Actual observations**
 **AVL Tree Performance:**
 
-![AVL Tree Performance Graph](result/time_complexity%20of_avl.png)
+![AVL Tree Performance Graph](result/time_complexity_of_avl.png)
 
 **Red-Black Tree Performance:**
 
-![Red-Black Tree Performance Graph](result/time_complexity%20of_bicolor.png)
+![Red-Black Tree Performance Graph](result/time_complexity_of_bicolor.png)
 
 - As shown in the charts, both trees offer similar overall performance.
   The main difference is that AVL trees perform significantly more rotations, which slightly increases insertion and deletion time.
